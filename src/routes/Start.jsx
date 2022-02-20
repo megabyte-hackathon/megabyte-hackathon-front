@@ -1,21 +1,35 @@
-import { useState } from "react";
 import styled from "styled-components";
+
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { careerActions } from "../store/career";
 
 const Start = () => {
+  const dispatch = useDispatch();
+  const career = useSelector((state) => state.career.career);
+  const period = useSelector((state) => state.career.period);
+
   const [start, setStart] = useState(false);
-  const [career, setCareer] = useState("");
-  const [checkAnswer, setCheckAnswer] = useState(false);
   console.log("start:" + start);
   console.log("career:" + career);
-  console.log("checkAnswer:" + checkAnswer);
-  function checkPeriod(period) {
-    setCareer(period);
-    setCheckAnswer(true);
-  }
+
+  const periodHandler = (period) => {
+    dispatch(careerActions.PERIOD(period));
+  };
+
+  const careerHandler = (action) => {
+    dispatch(careerActions.CAREER(action));
+  };
+
+  const resetHandler = () => {
+    dispatch(careerActions.RESET());
+  };
+
   // function nextPage() {}
   return (
     <StartBody>
+      {!start && resetHandler()}
       {!start && (
         <SetBtn
           onClick={() => {
@@ -29,31 +43,30 @@ const Start = () => {
         <CareerSelect>
           <div
             onClick={() => {
-              setCareer("new");
-              setCheckAnswer(true);
+              careerHandler("new");
             }}
           >
             신입
           </div>
           <div
             onClick={() => {
-              setCareer("career");
+              careerHandler("career");
             }}
           >
             경력
           </div>
         </CareerSelect>
       )}
-      {career === "career" && !checkAnswer && (
+      {career === "career" && !period && (
         <CareerPeriod>
-          <div onClick={() => checkPeriod(1)}>1년</div>
-          <div onClick={() => checkPeriod(2)}>2년</div>
-          <div onClick={() => checkPeriod(3)}>3년</div>
-          <div onClick={() => checkPeriod(4)}>4년</div>
-          <div onClick={() => checkPeriod(5)}>5년 이상</div>
+          <div onClick={() => periodHandler(1)}>1년</div>
+          <div onClick={() => periodHandler(2)}>2년</div>
+          <div onClick={() => periodHandler(3)}>3년</div>
+          <div onClick={() => periodHandler(4)}>4년</div>
+          <div onClick={() => periodHandler(5)}>5년 이상</div>
         </CareerPeriod>
       )}
-      {checkAnswer && (
+      {(career === "new" || period) && (
         <Answer>
           <Link className="answerbox" to="/nearhome">
             <span className="house">집</span> 근처에서{"  "}
