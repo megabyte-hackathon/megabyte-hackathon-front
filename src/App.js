@@ -1,6 +1,7 @@
 import Start from "./routes/Start";
 import { Routes, Route } from "react-router-dom";
 import NearCom from "./routes/NearCom";
+import NearHome from "./routes/NearHome";
 import styled from "styled-components";
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Start />}></Route>
         <Route path="/nearcompany" element={<NearCom />}></Route>
+        <Route path="/nearhome" element={<NearHome />}></Route>
       </Routes>
     </Main>
   );
