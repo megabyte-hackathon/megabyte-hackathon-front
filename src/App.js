@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import Start from "./routes/Start";
+import { Routes, Route } from "react-router-dom";
+import NearCom from "./routes/NearCom";
+import NearHome from "./routes/NearHome";
+import styled from "styled-components";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Main className="App">
+      <Routes>
+        <Route path="/" element={<Start />}></Route>
+        <Route path="/nearcompany" element={<NearCom />}></Route>
+        <Route path="/nearhome" element={<NearHome />}></Route>
+      </Routes>
+    </Main>
   );
 }
+
+const Main = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 export default App;
