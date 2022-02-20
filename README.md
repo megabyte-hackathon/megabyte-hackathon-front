@@ -21,7 +21,7 @@ ROOT
 # routes
 
 ```
-├── home
+├── Start
 │   └── nearhouse
 │   └── nearcom
 ```
