@@ -21,3 +21,7 @@ const careerSlice = createSlice({
     },
   },
 });
+
+export const careerActions = careerSlice.actions;
+
+export default careerSlice.reducer;
