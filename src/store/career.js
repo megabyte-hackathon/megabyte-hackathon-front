@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialCareerState = {
   career: "",
+  period: false,
   state: 0,
   job: "",
   field: "",
@@ -15,6 +16,9 @@ const careerSlice = createSlice({
   reducers: {
     CAREER(state, action) {
       state.career = action.payload;
+    },
+    PERIOD(state, action) {
+      state.period = action.payload;
     },
     STATE(state, action) {
       state.state = action.payload;
@@ -33,6 +37,7 @@ const careerSlice = createSlice({
     },
     RESET(state) {
       state.career = "";
+      state.period = false;
       state.state = 0;
       state.job = "";
       state.field = "";
