@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
+import conditionSlice from "./condition-slice";
 
 const store = configureStore({
-  reducer: {},
+  reducer: { condition: conditionSlice.reducer },
 });
 
 export default store;
