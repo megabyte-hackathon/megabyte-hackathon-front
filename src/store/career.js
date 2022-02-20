@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialCareerState = {
-  isNew: "",
-  state: "",
+  career: "",
+  state: 0,
   job: "",
   field: "",
   corporateType: "",
@@ -13,11 +13,31 @@ const careerSlice = createSlice({
   name: "career",
   initialState: initialCareerState,
   reducers: {
-    NEWCAREER(state) {
-      state.isNew = "new";
+    CAREER(state, action) {
+      state.career = action.payload;
     },
-    OLDCAREER(state) {
-      state.isNew = "old";
+    STATE(state, action) {
+      state.state = action.payload;
+    },
+    JOB(state, action) {
+      state.job = action.payload;
+    },
+    FIELD(state, action) {
+      state.field = action.payload;
+    },
+    CORPORATETYPE(state, action) {
+      state.corporateType = action.payload;
+    },
+    WORKTYPE(state, action) {
+      state.workType = action.payload;
+    },
+    RESET(state) {
+      state.career = "";
+      state.state = 0;
+      state.job = "";
+      state.field = "";
+      state.corporateType = "";
+      state.workType = "";
     },
   },
 });
