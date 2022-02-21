@@ -335,10 +335,12 @@ const CareerPeriod = styled.div`
       .up {
         width: 30px;
         padding: 18px 0 0 11px;
+        cursor: pointer;
       }
       .down {
         width: 30px;
         padding: 0 0 18px 11px;
+        cursor: pointer;
       }
     }
   }

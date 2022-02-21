@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import styled from "styled-components";
 import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
@@ -111,4 +109,3 @@ const HireUl = styled.ul`
 `;
 
 export default NearHome;
->>>>>>> f77baf50be4b6b1d8aaa9d7e4faaa548a21a74c1
