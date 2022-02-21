@@ -35,40 +35,52 @@ const Start = () => {
     <StartBody>
       {!start && resetHandler()}
       {!start && (
-        <SetBtn
-          onClick={() => {
-            setStart(!start);
-          }}
-        >
-          START
-        </SetBtn>
+        <Card>
+          <SetCard>
+            <h1>나만의 구직 카드를 만들어 보세요!</h1>
+            <span>나에게 딱 맞는 맞춤 공고를 만나려면?</span>
+            <button
+              onClick={() => {
+                setStart(!start);
+              }}
+            >
+              START
+            </button>
+          </SetCard>
+        </Card>
       )}
       {start && !career && (
-        <CareerSelect>
-          <div
-            onClick={() => {
-              careerHandler("new");
-            }}
-          >
-            신입
-          </div>
-          <div
-            onClick={() => {
-              careerHandler("career");
-            }}
-          >
-            경력
-          </div>
-        </CareerSelect>
+        <Card>
+          <CareerSelect>
+            <div
+              className="new"
+              onClick={() => {
+                careerHandler("new");
+              }}
+            >
+              신입
+            </div>
+            <div
+              className="career"
+              onClick={() => {
+                careerHandler("career");
+              }}
+            >
+              경력
+            </div>
+          </CareerSelect>
+        </Card>
       )}
       {career === "career" && !period && (
-        <CareerPeriod>
-          <div onClick={() => periodHandler(1)}>1년</div>
-          <div onClick={() => periodHandler(2)}>2년</div>
-          <div onClick={() => periodHandler(3)}>3년</div>
-          <div onClick={() => periodHandler(4)}>4년</div>
-          <div onClick={() => periodHandler(5)}>5년 이상</div>
-        </CareerPeriod>
+        <Card>
+          <CareerPeriod>
+            <div onClick={() => periodHandler(1)}>1년</div>
+            <div onClick={() => periodHandler(2)}>2년</div>
+            <div onClick={() => periodHandler(3)}>3년</div>
+            <div onClick={() => periodHandler(4)}>4년</div>
+            <div onClick={() => periodHandler(5)}>5년 이상</div>
+          </CareerPeriod>
+        </Card>
       )}
       {(career === "new" || period) && (
         <>
@@ -92,30 +104,58 @@ const Start = () => {
   );
 };
 
-const StartBody = styled.div`
+const StartBody = styled.body``;
+const Card = styled.div`
+  width: 480px;
+  height: 720px;
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid #e5e5ec;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.12);
+  border-radius: 32px;
 `;
-const SetBtn = styled.div`
-  margin: -100% 0 0 -100%;
-  border: 1px solid black;
-  border-radius: 2rem;
-  font-size: 2.5rem;
-  text-align: center;
-  padding: 0.8rem 1rem 0.5rem 1rem;
-  cursor: pointer;
-  &:hover {
-    background-color: red;
-    color: white;
-    border: 1px solid red;
+const SetCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h1 {
+    margin-top: 244px;
+    color: #111111;
+    width: 313px;
+    font-size: 40px;
+    line-height: 54px;
+    text-align: center;
+  }
+  span {
+    margin-top: 20px;
+    color: #767676;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  button {
+    margin-top: 28px;
+    color: #ffffff;
+    background-color: #1d1d1d;
+    width: 198px;
+    height: 56px;
+    border: none;
+    border-radius: 62px;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.5;
+    }
   }
 `;
 const CareerSelect = styled.div`
-  margin: -100% 0 0 -100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: center;
+  .new {
+    background-color: red;
+  }
   div {
     text-align: center;
     border: 1px solid black;
@@ -133,10 +173,9 @@ const CareerSelect = styled.div`
 `;
 
 const CareerPeriod = styled.div`
-  margin: -150% 0 0 -100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  align-items: center;
   div {
     text-align: center;
     border: 1px solid black;
