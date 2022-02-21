@@ -1,23 +1,27 @@
 import styled from "styled-components";
 import GeoMap from "../components/GeoMap";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
+import { gpsActions } from "../store/gps";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Start = () => {
+  const navigate = useNavigate();
+  const navigateTo = () => navigate("/nearHome");
   const dispatch = useDispatch();
+
   const career = useSelector((state) => state.career.career);
   const period = useSelector((state) => state.career.period);
   const state = useSelector((state) => state.career.state);
-  const [selectPeriod, setPeriod] = useState(0);
 
   const [start, setStart] = useState(false);
-  console.log("start:" + start);
-  console.log("career:" + career);
+  const [selectPeriod, setPeriod] = useState(0);
 
   const periodHandler = (period) => {
     dispatch(careerActions.PERIOD(period));
@@ -29,6 +33,10 @@ const Start = () => {
 
   const resetHandler = () => {
     dispatch(careerActions.RESET());
+  };
+
+  const gpsHandler = (action) => {
+    dispatch(gpsActions.GPSSET(action));
   };
 
   // function nextPage() {}
@@ -149,12 +157,20 @@ const Start = () => {
       {(career === "new" || period) && (
         <>
           {!state && (
-            <ChooseMap center={[36.064, 127.501]} zoom={7}>
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url=""
-              />
+            <ChooseMap
+              center={[36.064, 127.501]}
+              zoom={7}
+              whenCreated={(map) => {
+                map.on("click", function (e) {
+                  const { lat, lng } = e.latlng;
+                  gpsHandler([lat, lng]);
+                  navigateTo();
+                });
+              }}
+            >
+              <TileLayer attribution="" url="" />
               <GeoMap />
+              <div />
             </ChooseMap>
           )}
         </>
@@ -364,12 +380,15 @@ const ChooseMap = styled(MapContainer)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 480px;
-  height: 720px;
+  width: 488px;
+  height: 732px;
   border-radius: 32px;
   border: 1px solid #e5e5ec;
   box-sizing: border-box;
-  box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.12); ;
+  box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.12);
+  a {
+    display: none;
+  }
 `;
 
 export default Start;
