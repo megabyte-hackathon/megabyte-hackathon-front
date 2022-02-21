@@ -13,6 +13,7 @@ const Start = () => {
   const career = useSelector((state) => state.career.career);
   const period = useSelector((state) => state.career.period);
   const state = useSelector((state) => state.career.state);
+  const [selectPeriod, setPeriod] = useState(0);
 
   const [start, setStart] = useState(false);
   console.log("start:" + start);
@@ -60,6 +61,7 @@ const Start = () => {
             >
               신입
             </div>
+            <div className="or">or</div>
             <div
               className="career"
               onClick={() => {
@@ -74,21 +76,78 @@ const Start = () => {
       {career === "career" && !period && (
         <Card>
           <CareerPeriod>
-            <div onClick={() => periodHandler(1)}>1년</div>
-            <div onClick={() => periodHandler(2)}>2년</div>
-            <div onClick={() => periodHandler(3)}>3년</div>
-            <div onClick={() => periodHandler(4)}>4년</div>
-            <div onClick={() => periodHandler(5)}>5년 이상</div>
+            <div className="topgradation"></div>
+            <div className="botgradation"></div>
+            <div className="second">
+              {selectPeriod > 1 ? selectPeriod - 2 : ""}
+            </div>
+            <div className="first">
+              {selectPeriod > 0 ? selectPeriod - 1 : ""}
+            </div>
+            <div className="selectPeriod">
+              <div className="text">
+                <span>경력</span>{" "}
+                <span className="count"> {selectPeriod} </span> <span>년</span>
+              </div>
+              <div className="btn">
+                <div className="up" onClick={() => setPeriod(selectPeriod + 1)}>
+                  <svg
+                    width="18"
+                    height="11"
+                    viewBox="0 0 18 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M1 10L9 2L17 10" stroke="black" stroke-width="2" />
+                  </svg>
+                </div>
+                <div
+                  className="down"
+                  onClick={() => setPeriod(selectPeriod - 1)}
+                >
+                  <svg
+                    width="18"
+                    height="11"
+                    viewBox="0 0 18 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M17 1L9 9L1 0.999998"
+                      stroke="black"
+                      stroke-width="2"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div className="first">{selectPeriod + 1}</div>
+            <div className="second">{selectPeriod + 2}</div>
+
+            <div
+              className="choice-btn"
+              onClick={() => periodHandler(selectPeriod)}
+            >
+              <svg
+                width="32"
+                height="23"
+                viewBox="0 0 32 23"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 9.5L12.3158 20L30 2"
+                  stroke="white"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
           </CareerPeriod>
         </Card>
       )}
       {(career === "new" || period) && (
         <>
-          <Select>
-            <div>신입</div>
-            <div>경력</div>
-            {career && <div>{period}</div>}
-          </Select>
           {!state && (
             <ChooseMap center={[36.064, 127.501]} zoom={7}>
               <TileLayer
@@ -153,82 +212,150 @@ const CareerSelect = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 223px 40px 245px 40px;
   .new {
-    background-color: red;
-  }
-  div {
     text-align: center;
-    border: 1px solid black;
-    border-radius: 2rem;
-    padding: 0.8rem 1rem 0.5rem 1rem;
-    font-size: 2.5rem;
-    margin: 1rem;
+    width: 400px;
+    height: 100px;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 100px;
     cursor: pointer;
     &:hover {
-      background-color: blue;
-      color: white;
-      border: 1px solid blue;
+      color: #fff;
+      background-color: #4876ef;
+      border-radius: 20px;
     }
+  }
+  .career {
+    text-align: center;
+    width: 400px;
+    height: 100px;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 100px;
+    cursor: pointer;
+    &:hover {
+      color: #fff;
+      background-color: #4876ef;
+      border-radius: 20px;
+    }
+  }
+  .or {
+    width: 32px;
+    height: 28px;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    color: #767676;
+    margin: 12px 0;
   }
 `;
 
 const CareerPeriod = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  div {
+  height: 100%;
+  .topgradation {
+    position: absolute;
+    top: 155px;
+    left: 43px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      #ffffff 100%
+    );
+    transform: rotate(-180deg);
+    width: 400px;
+    height: 150px;
+  }
+  .botgradation {
+    position: absolute;
+    top: 400px;
+    left: 43px;
+    width: 400px;
+    height: 150px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      #ffffff 100%
+    );
+  }
+  .first {
+    height: 80px;
+    font-size: 60px;
+    line-height: 80px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    color: #999;
+    font-weight: 400;
+  }
+  .second {
+    height: 80px;
+    font-size: 50px;
+    line-height: 80px;
+    padding-bottom: -10px;
+    color: #999;
+    font-weight: 400;
+  }
+  span {
+    font-size: 32px;
+    line-height: 46px;
     text-align: center;
-    border: 1px solid black;
-    border-radius: 2rem;
-    padding: 0.8rem 0rem 0.5rem 0rem;
-    font-size: 2.5rem;
-    margin: 1rem;
-    cursor: pointer;
-    &:hover {
-      background-color: blue;
-      color: white;
-      border: 1px solid blue;
+    color: #111111;
+  }
+  .selectPeriod {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #f0f0f6;
+    box-sizing: border-box;
+    border-radius: 50px;
+    .text {
+      margin-right: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 220px;
+      margin-left: 55px;
+      line-height: 110px;
+      margin-top: 5px;
+      .count {
+        font-size: 60px;
+        margin: 0 20px;
+        width: 80px;
+        font-weight: 700;
+      }
     }
+    .btn {
+      padding-right: 20px;
+      .up {
+        width: 30px;
+        padding: 18px 0 0 11px;
+      }
+      .down {
+        width: 30px;
+        padding: 0 0 18px 11px;
+      }
+    }
+  }
+  .choice-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: #4876ef;
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+
+    bottom: 44px;
   }
 `;
 
-const Answer = styled.div`
-  margin: -50% 0 0 -100%;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  & .house {
-    font-size: 3rem;
-  }
-  & .company {
-    font-size: 3rem;
-  }
-  .answerbox {
-    display: block;
-    text-decoration: none;
-    color: black;
-    text-align: center;
-    border: 1px solid black;
-    border-radius: 2rem;
-    padding: 0.8rem 0rem 0.5rem 0rem;
-    font-size: 2.5rem;
-    margin: 1rem;
-    cursor: pointer;
-    &:hover {
-      background-color: blue;
-      color: white;
-      border: 1px solid blue;
-    }
-  }
-`;
-const Select = styled.div`
-  background-color: #ffffff;
-  width: 480px;
-  height: 720px;
-  border-radius: 32px;
-  border: 1px solid #ededed;
-  box-sizing: border-box;
-`;
 const ChooseMap = styled(MapContainer)`
   background: #fff;
   position: absolute;
