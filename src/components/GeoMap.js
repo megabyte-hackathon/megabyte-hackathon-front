@@ -3,7 +3,12 @@ import { GeoJSON } from "react-leaflet";
 import geoData from "../assets/TL_SCCO_CTPRVN.json";
 
 function GeoJson() {
-  return <GeoJSON data={geoData.features} />;
+  return (
+    <GeoJSON
+      data={geoData.features}
+      style={{ fillColor: "#002626", color: "white" }}
+    />
+  );
 }
 
 export default GeoJson;

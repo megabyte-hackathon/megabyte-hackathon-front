@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import conditionSlice from "./condition-slice";
+import gpsSlice from "./gps";
 import careerSlice from "./career";
 
 const store = configureStore({
-  reducer: { career: careerSlice },
+  reducer: { career: careerSlice, gps: gpsSlice },
 });
 
 export default store;
