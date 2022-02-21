@@ -26,7 +26,7 @@ const NearHome = () => {
                 html: "🐳",
               })}
             >
-              <Popup>따흐흑 회사</Popup>
+              <Popup>끄흐흐 회사</Popup>
             </Marker>
           ))}
         </SelectedMap>
@@ -40,25 +40,50 @@ const NearHome = () => {
           <button>보러가기</button>
         </MatZip>
       </div>
-      <HireUl></HireUl>
+      <HireUl>
+        <HireLi>
+          <h2>D-20 (채용시 마감)</h2>
+          <h1>(주)끄끄흐디자인</h1>
+          <p>
+            제트배송 영업
+            <br />
+            영업관리 담당자
+          </p>
+          <div>
+            <div className="career">
+              <span>경력무관</span>
+              <span>정규직</span>
+            </div>
+            <button>보러가기</button>
+          </div>
+        </HireLi>
+        <HireLi></HireLi>
+        <HireLi></HireLi>
+      </HireUl>
     </MapBody>
   );
 };
 
 const MapBody = styled.body`
   display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  & > div {
+    width: 100%;
+    margin-top: 88px;
+    position: relative;
+  }
 `;
 const SelectedMap = styled(MapContainer)`
   width: 620px;
-  height: 413px;
+  height: 620px;
   position: absolute;
-  top: 35%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
   border-radius: 32px;
   border: 1px solid #e5e5ec;
   box-sizing: border-box;
-  box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.12); ;
 `;
 const MatZip = styled.div`
   background: #ffffff;
@@ -71,9 +96,8 @@ const MatZip = styled.div`
   position: absolute;
   width: 290px;
   height: 413px;
-  top: 35%;
   left: calc(50% + 495px);
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 25%);
   h1 {
     color: #767676;
     font-size: 14px;
@@ -103,9 +127,56 @@ const MatZip = styled.div`
   }
 `;
 const HireUl = styled.ul`
-  background-color: red;
-  height: 100px;
-  width: 100px;
+  background-color: #f7f7fb;
+  list-style: none;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  height: 336px;
+  margin: 0;
+  padding: 0 0 0 56px;
+  bottom: 0;
+`;
+const HireLi = styled.li`
+  background-color: #ffffff;
+  width: 224px;
+  height: 224px;
+  border: 1px solid #e5e5ec;
+  border-radius: 16px;
+  margin-right: 40px;
+  margin-top: 36px;
+  padding: 0 16px;
+  h2 {
+    color: #ff3636;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 24px;
+  }
+  h1 {
+    color: #505050;
+    font-size: 14px;
+    line-height: 20px;
+    margin-top: 8px;
+  }
+  p {
+    color: #111111;
+    font-size: 16px;
+    line-height: 23px;
+    margin-top: 4px;
+  }
+  div {
+    margin-top: 8px;
+  }
+  & > div {
+    border-top: 1px solid#F0F0F7;
+  }
+  button {
+    width: 192px;
+    height: 36px;
+    border: 1px solid #4876ef;
+    box-sizing: border-box;
+    border-radius: 62px;
+  }
 `;
 
 export default NearHome;
