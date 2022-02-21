@@ -1,14 +1,18 @@
 import styled from "styled-components";
+import GeoMap from "../components/GeoMap";
+import "leaflet/dist/leaflet.css";
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Start = () => {
   const dispatch = useDispatch();
   const career = useSelector((state) => state.career.career);
   const period = useSelector((state) => state.career.period);
+  const state = useSelector((state) => state.career.state);
 
   const [start, setStart] = useState(false);
   console.log("start:" + start);
@@ -67,16 +71,22 @@ const Start = () => {
         </CareerPeriod>
       )}
       {(career === "new" || period) && (
-        <Answer>
-          <Link className="answerbox" to="/nearhome">
-            <span className="house">집</span> 근처에서{"  "}
-            <span className="company">회사</span> 구하기
-          </Link>
-          <Link className="answerbox" to="nearcompany">
-            <span className="company">회사</span> 근처에서{"  "}
-            <span className="house">집</span> 구하기
-          </Link>
-        </Answer>
+        <>
+          <Select>
+            <div>신입</div>
+            <div>경력</div>
+            {career && <div>{period}</div>}
+          </Select>
+          {!state && (
+            <ChooseMap center={[36.064, 127.501]} zoom={7}>
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url=""
+              />
+              <GeoMap />
+            </ChooseMap>
+          )}
+        </>
       )}
     </StartBody>
   );
@@ -171,6 +181,27 @@ const Answer = styled.div`
       border: 1px solid blue;
     }
   }
+`;
+const Select = styled.div`
+  background-color: #ffffff;
+  width: 480px;
+  height: 720px;
+  border-radius: 32px;
+  border: 1px solid #ededed;
+  box-sizing: border-box;
+`;
+const ChooseMap = styled(MapContainer)`
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 480px;
+  height: 720px;
+  border-radius: 32px;
+  border: 1px solid #e5e5ec;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.12); ;
 `;
 
 export default Start;
