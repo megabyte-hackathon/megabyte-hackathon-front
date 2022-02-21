@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import "leaflet/dist/leaflet.css";
-
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import * as L from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
 import { useState } from "react";
+
+import testgps from "../assets/testgps.json";
 
 const NearHome = () => {
   return (
@@ -13,8 +15,20 @@ const NearHome = () => {
         <SelectedMap center={[37.564, 127.001]} zoom={13}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
+            url="	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
           />
+          {testgps.company.map((com) => (
+            <Marker
+              key={com.gps[0]}
+              position={com.gps}
+              icon={L.divIcon({
+                className: "mymarker",
+                html: "🐳",
+              })}
+            >
+              <Popup>따흐흑 회사</Popup>
+            </Marker>
+          ))}
         </SelectedMap>
         <MatZip>
           <h1>!!회사이름!! 근처에</h1>
@@ -38,7 +52,7 @@ const SelectedMap = styled(MapContainer)`
   width: 620px;
   height: 413px;
   position: absolute;
-  top: 30%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 32px;
@@ -57,7 +71,7 @@ const MatZip = styled.div`
   position: absolute;
   width: 290px;
   height: 413px;
-  top: 30%;
+  top: 35%;
   left: calc(50% + 495px);
   transform: translate(-50%, -50%);
   h1 {
