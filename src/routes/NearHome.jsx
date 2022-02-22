@@ -1,18 +1,20 @@
 import styled from "styled-components";
 import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
+import testgps from "../assets/testgps.json";
+
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
 import { useState } from "react";
 
-import testgps from "../assets/testgps.json";
-
 const NearHome = () => {
+  const gps = useSelector((state) => state.gps.gps);
+
   return (
     <MapBody>
       <div>
-        <SelectedMap center={[37.564, 127.001]} zoom={13}>
+        <SelectedMap center={gps} zoom={13}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
@@ -23,7 +25,7 @@ const NearHome = () => {
               position={com.gps}
               icon={L.divIcon({
                 className: "mymarker",
-                html: "🐳",
+                html: "🦐",
               })}
             >
               <Popup>끄흐흐 회사</Popup>
