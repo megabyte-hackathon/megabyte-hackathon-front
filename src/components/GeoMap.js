@@ -1,13 +1,16 @@
 import React from "react";
 import { GeoJSON } from "react-leaflet";
 import geoData from "../assets/TL_SCCO_CTPRVN.json";
+import { useState } from "react";
 
 function GeoJson() {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <GeoJSON
       data={geoData.features}
       style={{
-        fillColor: "#b3b3b3",
+        fillColor: "#dbdfea",
         fillOpacity: 1,
         color: "white",
         weight: 0.4,
@@ -15,12 +18,12 @@ function GeoJson() {
       onEachFeature={(feature, layer) => {
         layer.on("mouseover", function () {
           this.setStyle({
-            fillColor: "#4876EF",
+            fillColor: "#4877EF",
           });
         });
         layer.on("mouseout", function () {
           this.setStyle({
-            fillColor: "#b3b3b3",
+            fillColor: "#dbdfea",
           });
         });
       }}

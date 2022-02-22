@@ -26,8 +26,8 @@ const MiddleMap = () => {
     const locationInfo = `${a + 0.02} ${b - 0.04} ${a + 0.02} ${b + 0.04} ${
       a - 0.02
     } ${b + 0.04} ${a - 0.02} ${b - 0.04}`;
-    console.log(locationInfo);
     dispatch(gpsActions.GPSSET(action));
+    dispatch(gpsActions.LOCATIONSET(locationInfo));
   };
 
   // function nextPage() {}
@@ -35,7 +35,7 @@ const MiddleMap = () => {
     <StartBody>
       <ChooseMap
         center={gps}
-        zoom={10}
+        zoom={11}
         whenCreated={(map) => {
           map.on("click", function (e) {
             const { lat, lng } = e.latlng;
