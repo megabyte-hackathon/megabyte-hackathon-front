@@ -2,7 +2,7 @@ import styled from "styled-components";
 import GeoMap from "../components/GeoMap";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import StartHeader from "../components/StartHeader";
+import Header from "../components/Header";
 import CareerPeriod from "../components/CareerPeriod";
 
 import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
@@ -332,7 +332,7 @@ const Start = () => {
 
   return (
     <StartBody>
-      <StartHeader />
+      <Header />
       {!start && resetHandler()}
       {!start && (
         <Card>
