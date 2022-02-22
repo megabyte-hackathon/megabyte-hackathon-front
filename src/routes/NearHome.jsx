@@ -3,6 +3,7 @@ import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
 import testgps from "../assets/testgps.json";
 
+import { renderToStaticMarkup } from "react-dom/server";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import HireCompany from "../components/HireCompany";
 import companys from "../assets/companys.json";
@@ -15,6 +16,8 @@ const NearHome = () => {
   const gps = useSelector((state) => state.gps.gps);
   const scrollRef = useRef();
   const [taste, setTaste] = useState("");
+  const [clicked, setClicked] = useState(0);
+
   function liClick(e, i) {
     scrollRef.current.scrollLeft = 260 * i;
     setTimeout(() => {
@@ -24,52 +27,90 @@ const NearHome = () => {
 
   return (
     <MapBody>
-      <div>
-        <SelectedMap center={gps} zoom={13}>
+      <div className="MapBody__main">
+        <SelectedMap center={gps} zoom={14}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
           />
-          {testgps.company.map((com) => (
+          {companys.list.map((com, index) => (
             <Marker
-              key={com.gps[0]}
-              position={com.gps}
+              key={com.id}
+              position={
+                clicked === com.id
+                  ? [com.latitude + 0.001, com.longitude - 0.001]
+                  : [com.latitude, com.longitude]
+              }
               icon={L.divIcon({
                 className: "mymarker",
-                html: "🦐",
+                html:
+                  clicked === com.id
+                    ? renderToStaticMarkup(
+                        <svg
+                          width="32"
+                          height="41"
+                          viewBox="0 0 32 41"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M31 16.4348C31 17.9054 30.5185 19.6772 29.6619 21.6394C28.8108 23.5892 27.6199 25.6589 26.2721 27.706C23.5766 31.8002 20.3059 35.726 18.0286 38.3059C16.9335 39.5465 15.0665 39.5465 13.9714 38.3059C11.6941 35.726 8.42344 31.8002 5.72788 27.706C4.38009 25.6589 3.18916 23.5892 2.33805 21.6394C1.48154 19.6772 1 17.9054 1 16.4348C1 7.88494 7.74083 1 16 1C24.2592 1 31 7.88494 31 16.4348Z"
+                            fill="#4876EF"
+                            stroke="white"
+                            stroke-width="2"
+                          />
+                        </svg>
+                      )
+                    : renderToStaticMarkup(
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="8"
+                            cy="8"
+                            r="7"
+                            fill="#4876EF"
+                            stroke="white"
+                            stroke-width="2"
+                          />
+                        </svg>
+                      ),
               })}
+              eventHandlers={{
+                click: (e) => {
+                  setClicked(com.id);
+                  liClick(e, index);
+                },
+              }}
             >
-              <Popup>끄흐흐 회사</Popup>
+              {/* <Popup>{com.companyName}</Popup> */}
             </Marker>
           ))}
         </SelectedMap>
-        <MatZip>
-          <h1>!!회사이름!! 근처에</h1>
-          <span>
-            총 <strong>!!맛집!!</strong>개의 맛집이
-            <br />
-            당신을 기다리고 있어요
-          </span>
-          <button>보러가기</button>
-        </MatZip>
       </div>
       <div className="list" ref={scrollRef}>
         <HireUl>
           {companys.list.map((li, i) => (
             <HireCompany
-              key={i}
-              deadline={li.deadline}
+              key={li.id}
+              id={li.id}
+              deadline={li.dueDate}
               condition={li.condition}
-              company={li.company}
+              company={li.companyName}
               department={li.department}
               position={li.position}
               career={li.career}
-              hirestate={li.hirestate}
+              hirestate={li.employType}
               liClick={liClick}
+              setClicked={setClicked}
               index={i}
               taste={taste}
               setTaste={setTaste}
-            ></HireCompany>
+            />
           ))}
           <li className="hide">
             <div></div>
@@ -95,10 +136,11 @@ const MapBody = styled.body`
   margin: 0;
   padding: 0;
   height: 100%;
-  & > div {
+  .MapBody__main {
     width: 100%;
-    margin-top: 88px;
-    position: relative;
+    margin-top: 189px;
+    display: flex;
+    justify-content: center;
   }
   .list {
     position: absolute;
@@ -109,14 +151,13 @@ const MapBody = styled.body`
   }
 `;
 const SelectedMap = styled(MapContainer)`
-  width: 620px;
-  height: 620px;
+  width: 960px;
+  height: 520px;
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
-  border-radius: 32px;
+  border-radius: 16px;
   border: 1px solid #e5e5ec;
   box-sizing: border-box;
+  margin-right: 20px;
 `;
 const MatZip = styled.div`
   background: #ffffff;
@@ -126,11 +167,8 @@ const MatZip = styled.div`
   box-sizing: border-box;
   border-radius: 16px;
   padding-left: 32px;
-  position: absolute;
   width: 290px;
   height: 413px;
-  left: calc(50% + 495px);
-  transform: translate(-50%, 25%);
   h1 {
     color: #767676;
     font-size: 14px;

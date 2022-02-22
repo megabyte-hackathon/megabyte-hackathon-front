@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const HireCompany = ({
   deadline,
+  id,
   condition,
   company,
   department,
@@ -9,6 +10,7 @@ const HireCompany = ({
   career,
   hirestate,
   liClick,
+  setClicked,
   index,
   taste,
 }) => {
@@ -16,6 +18,7 @@ const HireCompany = ({
     <HireLi
       onClick={(e) => {
         liClick(e, index);
+        setClicked(id);
       }}
     >
       {taste !== index ? (
@@ -135,7 +138,7 @@ const HireLi = styled.li`
     }
     span {
       font-weight: bold;
-      font-size: ;
+      font-size: 1rem;
     }
     .count {
       font-weight: bold;
