@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 const HireCompany = ({
@@ -14,6 +15,12 @@ const HireCompany = ({
   index,
   taste,
 }) => {
+  const [star, setStar] = useState(false);
+  const [list, setlist] = useState(false);
+  function starOn(e) {
+    e.stopPropagation();
+    setStar(!star);
+  }
   return (
     <HireLi
       onClick={(e) => {
@@ -23,20 +30,54 @@ const HireCompany = ({
     >
       {taste !== index ? (
         <div>
-          <div className="top">
-            <h2>
-              마감일: {deadline} ({condition})
-            </h2>
+          <div
+            className="star"
+            onClick={(e) => {
+              starOn(e);
+            }}
+          >
+            {!star ? (
+              <svg
+                width="20"
+                height="17"
+                viewBox="0 0 20 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 1L12.5392 6.19921L18.5595 6.87336L14.1086 10.7608L15.2901 16.3766L10 13.58L4.70993 16.3766L5.89144 10.7608L1.44049 6.87336L7.46077 6.19921L10 1Z"
+                  stroke="#B4C0D3"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            ) : (
+              <svg
+                width="20"
+                height="17"
+                viewBox="0 0 20 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 1L12.5392 6.19921L18.5595 6.87336L14.1086 10.7608L15.2901 16.3766L10 13.58L4.70993 16.3766L5.89144 10.7608L1.44049 6.87336L7.46077 6.19921L10 1Z"
+                  fill="#FFBD70"
+                  stroke="#FFBD70"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            )}
           </div>
-          <h1>{company}</h1>
-          <p>
-            {department}
-            <br />
-            {position}
-          </p>
+          <div className="top">
+            <h2>D-20 (채용시 마감)</h2>
+          </div>
+          <div className="company">{company}</div>
+          <div className="job">웹개발</div>
           <div className="career">
             <span>{career === 0 ? "경력무관" : career + " 년 이상"}</span>
             <span>{hirestate}</span>
+          </div>
+          <div className="grade">
+            맛집 <span>1</span>급수
           </div>
           <button>
             <svg
@@ -57,12 +98,26 @@ const HireCompany = ({
         </div>
       ) : (
         <div className="taste">
-          <h1>{company} 근처에</h1>
-          <p>
-            총 <span className="count">128</span>개의 <span>맛집</span>이{" "}
-          </p>
-          <p>당신을 기다리고 있어요</p>
-          <button>맛집보기</button>
+          {!list ? (
+            <div className="main">
+              <h1>
+                <span>{company}</span> 근처에
+              </h1>
+              <p>
+                총 <span className="count">128</span>개의 <span>맛집</span>이{" "}
+              </p>
+              <p>당신을 기다리고 있어요</p>
+              <button
+                onClick={() => {
+                  setlist(!list);
+                }}
+              >
+                맛집보기
+              </button>
+            </div>
+          ) : (
+            <div className="list">list</div>
+          )}
         </div>
       )}
     </HireLi>
@@ -78,17 +133,61 @@ const HireLi = styled.li`
   border-radius: 16px;
   position: relative;
   margin: 0 10px;
+  padding: 0 24px;
   div {
     .top {
       width: 190px;
       border-bottom: 1px solid #f0f0f7;
-      margin: 0 24px;
+      margin-top: 25px;
       h2 {
-        color: #ff3636;
         font-size: 14px;
-        line-height: 20px;
+        line-height: 14px;
+        color: #ff6969;
       }
     }
+    .star {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+    }
+    .company {
+      font-size: 13px;
+      line-height: 19px;
+      color: #505050;
+      margin-top: 10px;
+    }
+    .job {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 20px;
+      color: #111;
+      height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .career {
+      font-size: 12px;
+      line-height: 17px;
+      color: #767676;
+    }
+
+    .grade {
+      width: 78px;
+      height: 23px;
+      border: 1px solid #e5e5ec;
+      box-sizing: border-box;
+      border-radius: 35px;
+      font-size: 12px;
+      padding-top: 4px;
+      line-height: 17px;
+      text-align: center;
+      color: #999999;
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+    }
+
     h1 {
       color: #505050;
       font-size: 14px;
@@ -115,57 +214,63 @@ const HireLi = styled.li`
     }
   }
   .taste {
-    width: 238px;
+    width: 190px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    h1 {
-      font-size: 14px;
-      line-height: 20px;
-      text-align: center;
-      color: #767676;
-      margin-top: 38px;
-      margin-bottom: 20px;
-    }
-    p {
-      margin: 0;
-      font-weight: normal;
-      font-size: 14px;
-      line-height: 20px;
-      text-align: center;
-      color: #505050;
-    }
-    span {
-      font-weight: bold;
-      font-size: 1rem;
-    }
-    .count {
-      font-weight: bold;
-      font-size: 24px;
-      line-height: 28px;
-      text-align: center;
-      color: #4876ef;
-      margin: 0;
-    }
+    .main {
+      h1 {
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        color: #767676;
+        margin-top: 38px;
+        margin-bottom: 20px;
+        span {
+          font-weight: 700;
+          color: #505050;
+        }
+      }
+      p {
+        margin: 0;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        color: #505050;
+      }
+      span {
+        font-weight: bold;
+        font-size: 1rem;
+      }
+      .count {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 28px;
+        text-align: center;
+        color: #4876ef;
+        margin: 0;
+      }
 
-    button {
-      border: none;
-      width: 107px;
-      height: 35px;
-      box-sizing: border-box;
-      border-radius: 24px;
-      position: absolute;
-      bottom: 24px;
-      left: 66px;
-      padding-bottom: 6px;
-      color: #4876ef;
-      border: 1px solid #4876ef;
-      background-color: #ffffff;
-      padding-top: 5px;
-      &:hover {
-        background-color: #4876ef;
-        color: #ffffff;
+      button {
+        border: none;
+        width: 107px;
+        height: 35px;
+        box-sizing: border-box;
+        border-radius: 24px;
+        position: absolute;
+        bottom: 24px;
+        left: 66px;
+        padding-bottom: 6px;
+        color: #4876ef;
+        border: 1px solid #4876ef;
+        background-color: #ffffff;
+        padding-top: 5px;
+        &:hover {
+          background-color: #4876ef;
+          color: #ffffff;
+        }
       }
     }
   }
