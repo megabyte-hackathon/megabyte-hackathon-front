@@ -17,6 +17,8 @@ const HireCompany = ({
 }) => {
   const [star, setStar] = useState(false);
   const [list, setlist] = useState(false);
+
+  function dateCal(date) {}
   function starOn(e) {
     e.stopPropagation();
     setStar(!star);
@@ -74,7 +76,8 @@ const HireCompany = ({
           <div className="job">웹개발</div>
           <div className="career">
             <span>{career === 0 ? "경력무관" : career + " 년 이상"}</span>
-            <span>{hirestate}</span>
+            <br />
+            <span>{hirestate == "REGULAR?" ? "비정규직" : "정규직"}</span>
           </div>
           <div className="grade">
             맛집 <span>1</span>급수

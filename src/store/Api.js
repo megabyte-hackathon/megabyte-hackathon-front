@@ -28,4 +28,10 @@ export async function comApi(local, locationInfo, job, career) {
   return json;
 }
 
-export function matzipApi() {}
+export async function matzipApi(locationInfo) {
+  const json = await fetch(
+    `${BASE_URL}/restaurant?locationInfo=${locationInfo}`
+  ).then((response) => response.json());
+
+  return json;
+}
