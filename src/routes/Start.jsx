@@ -3,6 +3,7 @@ import GeoMap from "../components/GeoMap";
 import TestMap from "../components/TestMap";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import StartHeader from "../components/StartHeader";
 
 import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,7 +26,11 @@ const Start = () => {
 
   const [start, setStart] = useState(false);
   const [selectPeriod, setPeriod] = useState(0);
-  const [magnify, setMagnify] = useState(7);
+  const [hover, setHover] = useState(false);
+
+  const onMouseButton = () => {
+    this.className = "clicked";
+  };
 
   const periodHandler = (period) => {
     dispatch(careerActions.PERIOD(period));
@@ -43,9 +48,9 @@ const Start = () => {
     dispatch(gpsActions.GPSSET(action));
   };
 
-  // function nextPage() {}
   return (
     <StartBody>
+      <StartHeader />
       {!start && resetHandler()}
       {!start && (
         <Card>
@@ -66,19 +71,19 @@ const Start = () => {
         <Card>
           <CareerSelect>
             <div
-              className="new"
-              onClick={() => {
-                careerHandler("new");
-              }}
+              className={hover ? "hovered" : "new"}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              onClick={() => careerHandler("new")}
             >
               신입
             </div>
-            <div className="or">or</div>
+            <span className={hover ? "hovered or" : "or"}>or</span>
             <div
-              className="career"
-              onClick={() => {
-                careerHandler("career");
-              }}
+              className={hover ? "hovered" : "career"}
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              onClick={() => careerHandler("career")}
             >
               경력
             </div>
@@ -208,19 +213,21 @@ const SetCard = styled.div`
     text-align: center;
   }
   span {
-    margin-top: 20px;
+    margin-top: 24px;
     color: #767676;
     font-size: 14px;
     line-height: 20px;
   }
   button {
-    margin-top: 28px;
     color: #ffffff;
-    background-color: #1d1d1d;
-    width: 198px;
+    background-color: #4876ef;
+    width: 132px;
     height: 56px;
     border: none;
-    border-radius: 62px;
+    border-radius: 72px;
+    margin-top: 36px;
+    font-size: 20px;
+    line-height: 23px;
     cursor: pointer;
     &:hover {
       opacity: 0.5;
@@ -228,36 +235,33 @@ const SetCard = styled.div`
   }
 `;
 const CareerSelect = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 223px 40px 245px 40px;
-  .new {
-    text-align: center;
-    width: 400px;
-    height: 100px;
-    font-weight: bold;
-    font-size: 60px;
-    line-height: 100px;
-    cursor: pointer;
-    &:hover {
-      color: #fff;
-      background-color: #4876ef;
-      border-radius: 20px;
-    }
+  justify-content: center;
+  & > .hovered {
+    color: #999999;
+    font-weight: 400;
   }
-  .career {
-    text-align: center;
-    width: 400px;
-    height: 100px;
-    font-weight: bold;
+  .hovered.or {
+    color: #ffffff;
+  }
+  & > div {
+    color: #111111;
+    width: 408px;
+    height: 120px;
+    border-radius: 60px;
+    box-sizing: border-box;
     font-size: 60px;
-    line-height: 100px;
+    font-weight: 600;
+    line-height: 130px;
+    text-align: center;
+    vertical-align: middle;
     cursor: pointer;
     &:hover {
-      color: #fff;
-      background-color: #4876ef;
-      border-radius: 20px;
+      color: #4876ef;
+      border: 1px solid #4876ef;
     }
   }
   .or {
