@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import GeoMap from "../components/GeoMap";
+import TestMap from "../components/TestMap";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -10,18 +11,21 @@ import { gpsActions } from "../store/gps";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useEffect, useMemo } from "react";
 
 const Start = () => {
   const navigate = useNavigate();
-  const navigateTo = () => navigate("/nearHome");
+  const navigateTo = () => navigate("/MiddleMap");
   const dispatch = useDispatch();
 
   const career = useSelector((state) => state.career.career);
   const period = useSelector((state) => state.career.period);
   const state = useSelector((state) => state.career.state);
+  const gps = useSelector((state) => state.gps.gps);
 
   const [start, setStart] = useState(false);
   const [selectPeriod, setPeriod] = useState(0);
+  const [magnify, setMagnify] = useState(7);
 
   const periodHandler = (period) => {
     dispatch(careerActions.PERIOD(period));
@@ -158,7 +162,7 @@ const Start = () => {
         <>
           {!state && (
             <ChooseMap
-              center={[36.064, 127.501]}
+              center={gps}
               zoom={7}
               whenCreated={(map) => {
                 map.on("click", function (e) {
@@ -168,7 +172,6 @@ const Start = () => {
                 });
               }}
             >
-              <TileLayer attribution="" url="" />
               <GeoMap />
               <div />
             </ChooseMap>
