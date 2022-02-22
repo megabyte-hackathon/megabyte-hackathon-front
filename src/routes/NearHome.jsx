@@ -2,13 +2,22 @@ import styled from "styled-components";
 import "leaflet/dist/leaflet.css";
 import * as L from "leaflet";
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
-import { useSelector, useDispatch } from "react-redux";
-import { careerActions } from "../store/career";
-import { useState } from "react";
-
+import HireCompany from "../components/HireCompany";
 import testgps from "../assets/testgps.json";
+import companys from "../assets/companys.json";
+import { useState } from "react";
+import { useRef } from "react";
 
 const NearHome = () => {
+  const scrollRef = useRef();
+  const [taste, setTaste] = useState("");
+  function liClick(e, i) {
+    scrollRef.current.scrollLeft = 260 * i;
+    setTimeout(() => {
+      setTaste(i);
+    }, 400);
+  }
+
   return (
     <MapBody>
       <div>
@@ -40,26 +49,38 @@ const NearHome = () => {
           <button>보러가기</button>
         </MatZip>
       </div>
-      <HireUl>
-        <HireLi>
-          <h2>D-20 (채용시 마감)</h2>
-          <h1>(주)끄끄흐디자인</h1>
-          <p>
-            제트배송 영업
-            <br />
-            영업관리 담당자
-          </p>
-          <div>
-            <div className="career">
-              <span>경력무관</span>
-              <span>정규직</span>
-            </div>
-            <button>보러가기</button>
-          </div>
-        </HireLi>
-        <HireLi></HireLi>
-        <HireLi></HireLi>
-      </HireUl>
+      <div className="list" ref={scrollRef}>
+        <HireUl>
+          {companys.list.map((li, i) => (
+            <HireCompany
+              key={i}
+              deadline={li.deadline}
+              condition={li.condition}
+              company={li.company}
+              department={li.department}
+              position={li.position}
+              career={li.career}
+              hirestate={li.hirestate}
+              liClick={liClick}
+              index={i}
+              taste={taste}
+              setTaste={setTaste}
+            ></HireCompany>
+          ))}
+          <li className="hide">
+            <div></div>
+          </li>
+          <li className="hide">
+            <div></div>
+          </li>
+          <li className="hide">
+            <div></div>
+          </li>
+          <li className="hide">
+            <div></div>
+          </li>
+        </HireUl>
+      </div>
     </MapBody>
   );
 };
@@ -69,10 +90,18 @@ const MapBody = styled.body`
   flex-direction: column;
   margin: 0;
   padding: 0;
+  height: 100%;
   & > div {
     width: 100%;
     margin-top: 88px;
     position: relative;
+  }
+  .list {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    overflow: scroll;
+    scroll-behavior: smooth;
   }
 `;
 const SelectedMap = styled(MapContainer)`
@@ -127,55 +156,17 @@ const MatZip = styled.div`
   }
 `;
 const HireUl = styled.ul`
-  background-color: #f7f7fb;
   list-style: none;
-  position: absolute;
-  width: 100%;
   display: flex;
   height: 336px;
   margin: 0;
-  padding: 0 0 0 56px;
-  bottom: 0;
-`;
-const HireLi = styled.li`
-  background-color: #ffffff;
-  width: 224px;
-  height: 224px;
-  border: 1px solid #e5e5ec;
-  border-radius: 16px;
-  margin-right: 40px;
-  margin-top: 36px;
-  padding: 0 16px;
-  h2 {
-    color: #ff3636;
-    font-size: 14px;
-    line-height: 20px;
-    margin-top: 24px;
-  }
-  h1 {
-    color: #505050;
-    font-size: 14px;
-    line-height: 20px;
-    margin-top: 8px;
-  }
-  p {
-    color: #111111;
-    font-size: 16px;
-    line-height: 23px;
-    margin-top: 4px;
-  }
-  div {
-    margin-top: 8px;
-  }
-  & > div {
-    border-top: 1px solid#F0F0F7;
-  }
-  button {
-    width: 192px;
-    height: 36px;
-    border: 1px solid #4876ef;
-    box-sizing: border-box;
-    border-radius: 62px;
+  padding: 0 830px;
+  .hide {
+    div {
+      width: 240px;
+      height: 224px;
+      margin: 0 10px;
+    }
   }
 `;
 
