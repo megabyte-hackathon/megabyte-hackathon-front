@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import StartHeader from "../components/StartHeader";
 import CareerPeriod from "../components/CareerPeriod";
+
 import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
@@ -303,6 +304,14 @@ const Start = () => {
     dispatch(careerActions.CAREER(action));
   };
 
+  const fieldHandler = (action) => {
+    dispatch(careerActions.FIELD(action));
+  };
+
+  const jobHandler = (action) => {
+    dispatch(careerActions.JOB(action));
+  };
+
   const resetHandler = () => {
     dispatch(careerActions.RESET());
   };
@@ -354,6 +363,7 @@ const Start = () => {
                 <div
                   onMouseUp={() => {
                     setOccupation(item.occupation);
+                    fieldHandler(item.occupation);
                   }}
                   onMouseDown={(e) => {
                     e.target.style.background = "black";
@@ -393,6 +403,7 @@ const Start = () => {
                 <div
                   onMouseUp={() => {
                     setJob(item);
+                    jobHandler(item);
                   }}
                   onMouseDown={(e) => {
                     e.target.style.background = "black";
@@ -422,7 +433,10 @@ const Start = () => {
               className={hover ? "hovered" : "new"}
               onMouseEnter={() => setHover(true)}
               onMouseLeave={() => setHover(false)}
-              onClick={() => careerHandler("new")}
+              onClick={() => {
+                careerHandler("new");
+                periodHandler(0);
+              }}
             >
               신입
             </div>

@@ -8,15 +8,32 @@ import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import HireCompany from "../components/HireCompany";
 import companys from "../assets/companys.json";
 import { useState } from "react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
+import { comApi } from "../store/Api";
 
 const NearHome = () => {
   const gps = useSelector((state) => state.gps.gps);
   const scrollRef = useRef();
   const [taste, setTaste] = useState("");
   const [clicked, setClicked] = useState(0);
+  const [comList, setComList] = useState();
+  const [loading, setLoading] = useState(true);
+
+  const area = encodeURI(useSelector((state) => state.gps.area));
+  const locationInfo = useSelector((state) => state.gps.locationInfo);
+  const job = encodeURI(useSelector((state) => state.career.job));
+  const period = useSelector((state) => state.career.period);
+
+  useEffect(() => {
+    (async () => {
+      const listCom = await comApi(area, locationInfo, job, period);
+      setComList(listCom);
+      setLoading(false);
+      console.log(comList);
+    })();
+  }, []);
 
   function liClick(e, i) {
     scrollRef.current.scrollLeft = 260 * i;
@@ -27,105 +44,112 @@ const NearHome = () => {
 
   return (
     <MapBody>
-      <div className="MapBody__main">
-        <SelectedMap center={gps} zoom={14}>
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
-          />
-          {companys.list.map((com, index) => (
-            <Marker
-              key={com.id}
-              position={
-                clicked === com.id
-                  ? [com.latitude + 0.001, com.longitude - 0.001]
-                  : [com.latitude, com.longitude]
-              }
-              icon={L.divIcon({
-                className: "mymarker",
-                html:
-                  clicked === com.id
-                    ? renderToStaticMarkup(
-                        <svg
-                          width="32"
-                          height="41"
-                          viewBox="0 0 32 41"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M31 16.4348C31 17.9054 30.5185 19.6772 29.6619 21.6394C28.8108 23.5892 27.6199 25.6589 26.2721 27.706C23.5766 31.8002 20.3059 35.726 18.0286 38.3059C16.9335 39.5465 15.0665 39.5465 13.9714 38.3059C11.6941 35.726 8.42344 31.8002 5.72788 27.706C4.38009 25.6589 3.18916 23.5892 2.33805 21.6394C1.48154 19.6772 1 17.9054 1 16.4348C1 7.88494 7.74083 1 16 1C24.2592 1 31 7.88494 31 16.4348Z"
-                            fill="#4876EF"
-                            stroke="white"
-                            stroke-width="2"
-                          />
-                        </svg>
-                      )
-                    : renderToStaticMarkup(
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="8"
-                            cy="8"
-                            r="7"
-                            fill="#4876EF"
-                            stroke="white"
-                            stroke-width="2"
-                          />
-                        </svg>
-                      ),
-              })}
-              eventHandlers={{
-                click: (e) => {
-                  setClicked(com.id);
-                  liClick(e, index);
-                },
-              }}
-            >
-              {/* <Popup>{com.companyName}</Popup> */}
-            </Marker>
-          ))}
-        </SelectedMap>
-      </div>
-      <div className="list" ref={scrollRef}>
-        <HireUl>
-          {companys.list.map((li, i) => (
-            <HireCompany
-              key={li.id}
-              id={li.id}
-              deadline={li.dueDate}
-              condition={li.condition}
-              company={li.companyName}
-              department={li.department}
-              position={li.position}
-              career={li.career}
-              hirestate={li.employType}
-              liClick={liClick}
-              setClicked={setClicked}
-              index={i}
-              taste={taste}
-              setTaste={setTaste}
-            />
-          ))}
-          <li className="hide">
-            <div></div>
-          </li>
-          <li className="hide">
-            <div></div>
-          </li>
-          <li className="hide">
-            <div></div>
-          </li>
-          <li className="hide">
-            <div></div>
-          </li>
-        </HireUl>
-      </div>
+      {!loading && (
+        <>
+          <div className="MapBody__main">
+            <SelectedMap center={gps} zoom={14}>
+              <TileLayer
+                attribution=""
+                url="	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
+              />
+              {comList.announcements.map((com, index) => (
+                <Marker
+                  key={com.id}
+                  position={
+                    clicked === com.id
+                      ? [com.latitude + 0.001, com.longitude - 0.001]
+                      : [com.latitude, com.longitude]
+                  }
+                  icon={L.divIcon({
+                    className: "mymarker",
+                    html:
+                      clicked === com.id
+                        ? renderToStaticMarkup(
+                            <svg
+                              width="40"
+                              height="44"
+                              viewBox="0 0 40 44"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M40 20C40 26.0826 37.2847 31.531 33 35.1992C30.21 37.5878 23.5936 41.7691 21.035 43.3604C20.3979 43.7567 19.6021 43.7567 18.965 43.3604C16.4064 41.7691 9.79004 37.5878 7 35.1992C2.71535 31.531 0 26.0826 0 20C0 8.9543 8.9543 0 20 0C31.0457 0 40 8.9543 40 20Z"
+                                fill="#4876EF"
+                              />
+                              <circle cx="20" cy="20" r="16" fill="white" />
+                              <circle cx="15" cy="15" r="4" fill="#4876EF" />
+                              <circle cx="25" cy="15" r="4" fill="#B4C0D3" />
+                              <circle cx="15" cy="25" r="4" fill="#B4C0D3" />
+                              <circle cx="25" cy="25" r="4" fill="#00D3AB" />
+                            </svg>
+                          )
+                        : renderToStaticMarkup(
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 16 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                cx="8"
+                                cy="8"
+                                r="7"
+                                fill="#4876EF"
+                                stroke="white"
+                                stroke-width="2"
+                              />
+                            </svg>
+                          ),
+                  })}
+                  eventHandlers={{
+                    click: (e) => {
+                      setClicked(com.id);
+                      liClick(e, index);
+                    },
+                  }}
+                >
+                  {/* <Popup>{com.companyName}</Popup> */}
+                </Marker>
+              ))}
+            </SelectedMap>
+          </div>
+          <div className="list" ref={scrollRef}>
+            <HireUl>
+              {comList.announcements.map((li, i) => (
+                <HireCompany
+                  key={li.id}
+                  id={li.id}
+                  deadline={li.dueDate}
+                  condition={li.condition}
+                  company={li.companyName}
+                  department={li.department}
+                  position={li.position}
+                  career={li.career}
+                  hirestate={li.employType}
+                  liClick={liClick}
+                  setClicked={setClicked}
+                  index={i}
+                  taste={taste}
+                  setTaste={setTaste}
+                />
+              ))}
+              <li className="hide">
+                <div></div>
+              </li>
+              <li className="hide">
+                <div></div>
+              </li>
+              <li className="hide">
+                <div></div>
+              </li>
+              <li className="hide">
+                <div></div>
+              </li>
+            </HireUl>
+          </div>
+        </>
+      )}
     </MapBody>
   );
 };
@@ -158,6 +182,9 @@ const SelectedMap = styled(MapContainer)`
   border: 1px solid #e5e5ec;
   box-sizing: border-box;
   margin-right: 20px;
+  a {
+    display: none;
+  }
 `;
 const MatZip = styled.div`
   background: #ffffff;
