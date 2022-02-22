@@ -2,6 +2,7 @@ import Start from "./routes/Start";
 import NearHome from "./routes/NearHome";
 import MiddleMap from "./routes/MiddleMap";
 import styled from "styled-components";
+import Result from "./routes/Result";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Start />}></Route>
         <Route path="/nearhome" element={<NearHome />}></Route>
         <Route path="/middlemap" element={<MiddleMap />}></Route>
+        <Route path="/result" element={<Result />}></Route>
       </Routes>
     </Main>
   );

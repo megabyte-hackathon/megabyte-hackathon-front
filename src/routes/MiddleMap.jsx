@@ -15,12 +15,18 @@ import { useEffect, useMemo } from "react";
 
 const MiddleMap = () => {
   const navigate = useNavigate();
-  const navigateTo = () => navigate("/nearhome");
+  const navigateTo = () => navigate("/result");
   const dispatch = useDispatch();
 
   const gps = useSelector((state) => state.gps.gps);
 
   const gpsHandler = (action) => {
+    const a = action[0];
+    const b = action[1];
+    const locationInfo = `${a + 0.02} ${b - 0.04} ${a + 0.02} ${b + 0.04} ${
+      a - 0.02
+    } ${b + 0.04} ${a - 0.02} ${b - 0.04}`;
+    console.log(locationInfo);
     dispatch(gpsActions.GPSSET(action));
   };
 
