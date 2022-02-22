@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialGpsState = { gps: [36.064, 127.501] };
+const initialGpsState = { gps: [36.064, 127.501], locationInfo: "", area: "" };
 
 const gpsSlice = createSlice({
   name: "gps",
@@ -7,6 +7,12 @@ const gpsSlice = createSlice({
   reducers: {
     GPSSET(state, action) {
       state.gps = action.payload;
+    },
+    LOCATIONSET(state, action) {
+      state.locationInfo = action.payload;
+    },
+    AREASET(state, action) {
+      state.area = action.payload;
     },
   },
 });

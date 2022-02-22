@@ -8,9 +8,10 @@ import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import HireCompany from "../components/HireCompany";
 import companys from "../assets/companys.json";
 import { useState } from "react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
+import { comApi } from "../store/Api";
 
 const NearHome = () => {
   const gps = useSelector((state) => state.gps.gps);
@@ -19,7 +20,22 @@ const NearHome = () => {
   const [clicked, setClicked] = useState(0);
   const [star, setStar] = useState(0);
   const [heart, setHeart] = useState(0);
+  const [comList, setComList] = useState();
+  const [loading, setLoading] = useState(true);
 
+  const area = encodeURI(useSelector((state) => state.gps.area));
+  const locationInfo = useSelector((state) => state.gps.locationInfo);
+  const job = encodeURI(useSelector((state) => state.career.job));
+  const period = useSelector((state) => state.career.period);
+
+  useEffect(() => {
+    (async () => {
+      const listCom = await comApi(area, locationInfo, job, period);
+      setComList(listCom);
+      setLoading(false);
+      console.log(comList);
+    })();
+  }, []);
   function liClick(e, i) {
     scrollRef.current.scrollLeft = 260 * i;
     setTimeout(() => {
@@ -29,6 +45,7 @@ const NearHome = () => {
 
   return (
     <MapBody>
+
       <div className="ad">
         {" "}
         <span>나만의 공고</span>를 <span>지도</span>에서 만나보세요.{" "}
@@ -390,7 +407,12 @@ const SelectedMap = styled(MapContainer)`
   border-radius: 16px;
   border: 1px solid #e5e5ec;
   box-sizing: border-box;
+
+  a {
+    display: none;
+  }
 `;
+
 
 const HireUl = styled.ul`
   list-style: none;

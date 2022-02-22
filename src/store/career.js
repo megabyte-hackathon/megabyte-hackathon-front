@@ -4,8 +4,8 @@ const initialCareerState = {
   career: "",
   period: false,
   state: 0,
-  job: "",
   field: "",
+  job: "",
   corporateType: "",
   workType: "",
 };

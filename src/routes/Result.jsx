@@ -1,10 +1,19 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Result = () => {
-  const occupation = "IT/인터넷";
-  const job = "외환/국제금융/펀드매니저";
-  const career = 2;
-  const location = "서울시 송파구";
+  const navigate = useNavigate();
+  const navigateTo = () => navigate("/NearHome");
+
+  const area = useSelector((state) => state.gps.area);
+  const field = useSelector((state) => state.career.field);
+  const job = useSelector((state) => state.career.job);
+  const career = useSelector((state) => state.career.career);
+  const period = useSelector((state) => state.career.period);
+
+  const location = `서울시 ${area}`;
+
   return (
     <Page>
       <Card>
@@ -30,16 +39,18 @@ const Result = () => {
             />
           </svg>
         </div>
-        <div className="occupation">{occupation}</div>
+        <div className="occupation">{field}</div>
         <div className="job">
           <div>{job}</div>
         </div>
         <div className="career">
-          {career === 0 ? "신입&경력무관" : "경력 " + career + " 년 이상"}
+          {career === "new" ? "신입&경력무관" : "경력 " + period + " 년 이상"}
         </div>
         <div className="location">{location}</div>
         <div className="go">당신에게 딱 맞는 공고 당장 보러가기</div>
-        <button>START</button>
+        <button className="navBtn" onClick={navigateTo}>
+          START
+        </button>
       </Card>
     </Page>
   );
@@ -111,11 +122,13 @@ const Card = styled.div`
     font-size: 20px;
     line-height: 23px;
     color: #ffffff;
+    cursor: pointer;
   }
   .heart {
     position: absolute;
     top: 40px;
     right: 40px;
+    cursor: pointer;
   }
 `;
 
