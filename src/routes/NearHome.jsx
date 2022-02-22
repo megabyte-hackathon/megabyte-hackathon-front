@@ -5,7 +5,6 @@ import testgps from "../assets/testgps.json";
 
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import HireCompany from "../components/HireCompany";
-import testgps from "../assets/testgps.json";
 import companys from "../assets/companys.json";
 import { useState } from "react";
 import { useRef } from "react";
