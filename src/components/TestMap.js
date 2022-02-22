@@ -1,8 +1,8 @@
 import React from "react";
 import { GeoJSON } from "react-leaflet";
-import geoData from "../assets/TL_SCCO_CTPRVN.json";
+import geoData from "../assets/test.json";
 
-function GeoJson() {
+function TestJson() {
   return (
     <GeoJSON
       data={geoData.features}
@@ -28,4 +28,4 @@ function GeoJson() {
   );
 }
 
-export default GeoJson;
+export default TestJson;
