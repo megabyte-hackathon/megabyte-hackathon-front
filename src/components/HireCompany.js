@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const HireCompany = ({
   deadline,
@@ -17,12 +18,13 @@ const HireCompany = ({
 }) => {
   const [star, setStar] = useState(false);
   const [list, setlist] = useState(false);
-
-  function dateCal(date) {}
   function starOn(e) {
     e.stopPropagation();
     setStar(!star);
   }
+
+  const matList = useSelector((state) => state.mat.list);
+  console.log(matList.restaurants);
   return (
     <HireLi
       onClick={(e) => {
@@ -77,7 +79,7 @@ const HireCompany = ({
           <div className="career">
             <span>{career === 0 ? "경력무관" : career + " 년 이상"}</span>
             <br />
-            <span>{hirestate == "REGULAR?" ? "비정규직" : "정규직"}</span>
+            <span>{hirestate === "REGULAR?" ? "비정규직" : "정규직"}</span>
           </div>
           <div className="grade">
             맛집 <span>1</span>급수
@@ -119,7 +121,18 @@ const HireCompany = ({
               </button>
             </div>
           ) : (
-            <div className="list">list</div>
+            <div className="list">
+              {matList.restaurants.map((i) => {
+                return (
+                  <div>
+                    <div className="name">{i.name}</div>
+                    <div className="kindof">
+                      <sapn>#{i.kindOf}</sapn>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
       )}
@@ -222,6 +235,23 @@ const HireLi = styled.li`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    .list {
+      height: 224px;
+      overflow: scroll;
+      .name {
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        color: #111111;
+        margin: 8px;
+      }
+      .kindof {
+        font-size: 12px;
+        line-height: 17px;
+        text-align: center;
+        color: #ff6969;
+      }
+    }
     .main {
       h1 {
         font-size: 14px;
