@@ -109,7 +109,8 @@ const HireCompany = ({
                 <span>{company}</span> 근처에
               </h1>
               <p>
-                총 <span className="count">128</span>개의 <span>맛집</span>이{" "}
+                총 <span className="count">{matList.restaurants.length}</span>
+                개의 <span>맛집</span>이{" "}
               </p>
               <p>당신을 기다리고 있어요</p>
               <button
