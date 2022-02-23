@@ -12,8 +12,10 @@ import { useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
 import { comApi, matzipApi } from "../store/Api";
+import { matActions } from "../store/matzip";
 
 const NearHome = () => {
+  const dispatch = useDispatch();
   const gps = useSelector((state) => state.gps.gps);
   const scrollRef = useRef();
   const [taste, setTaste] = useState("");
@@ -24,6 +26,7 @@ const NearHome = () => {
   const [loading, setLoading] = useState(true);
   const [onlyCom, setOnlyCom] = useState({});
   const [matList, setMatList] = useState();
+  const [loading2, setLoading2] = useState(true);
 
   const area = useSelector((state) => state.gps.area);
   const locationInfo = useSelector((state) => state.gps.locationInfo);
@@ -41,6 +44,8 @@ const NearHome = () => {
       );
       setComList(listCom);
       setLoading(false);
+
+      console.log(comList);
     })();
   }, []);
 
@@ -48,7 +53,7 @@ const NearHome = () => {
     (async () => {
       const listMatzip = await matzipApi(locationInfo);
       setMatList(listMatzip);
-      console.log(matList);
+      dispatch(matActions.MATSET(listMatzip));
     })();
   }, [clicked]);
 
@@ -56,8 +61,8 @@ const NearHome = () => {
     if (clicked !== 0) {
       const uni = comList.announcements.filter((obj) => obj.id === clicked);
       setOnlyCom(uni);
+      setLoading2(false);
     }
-    console.log(onlyCom);
   }, [clicked]);
 
   function liClick(e, i) {
@@ -312,7 +317,7 @@ const NearHome = () => {
             </div>
             <div className="location">서울시 {area}</div>
           </div>
-          {clicked && (
+          {!loading2 && (
             <div className="hireinfo">
               <div
                 className="star"
@@ -352,21 +357,25 @@ const NearHome = () => {
                 )}
               </div>
               <div className="deadline">D-20</div>
-              <div className="company">{onlyCom.companyName}</div>
+              <div className="company">{onlyCom[0].companyName}</div>
               <div className="job">
-                <div>{onlyCom.job}</div>
+                <div>{onlyCom[0].job}</div>
               </div>
               <div className="career">
-                <span>1년이상</span>
+                <span>
+                  {onlyCom[0].career === 0
+                    ? "경력무관"
+                    : onlyCom[0].career + " 년 이상"}{" "}
+                </span>
                 <span>정규직</span>
               </div>
               <button>상세보기</button>
               <div className="grade">
-                맛집<span>1</span>급수의 가게들을 하단에서 확인하세요.
+                맛집<span>{onlyCom[0].localGrade}</span>급수의 가게들을 하단에서
+                확인하세요.
               </div>
             </div>
           )}
-
           <div className="list" ref={scrollRef}>
             <HireUl>
               {comList.announcements.map((li, i) => (
