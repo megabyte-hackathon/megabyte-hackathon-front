@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { careerActions } from "../store/career";
 import { comApi, matzipApi } from "../store/Api";
 import { matActions } from "../store/matzip";
+import Header from "../components/Header";
 
 const NearHome = () => {
   const dispatch = useDispatch();
@@ -74,6 +75,7 @@ const NearHome = () => {
 
   return (
     <MapBody>
+      <Header />
       {!loading && (
         <>
           <div className="ad">

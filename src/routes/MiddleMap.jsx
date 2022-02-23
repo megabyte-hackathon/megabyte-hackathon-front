@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useEffect, useMemo } from "react";
+import Header from "../components/Header";
 
 const MiddleMap = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const MiddleMap = () => {
   // function nextPage() {}
   return (
     <StartBody>
+      <Header />;
       <ChooseMap
         center={gps}
         zoom={11}
